@@ -157,6 +157,11 @@ Muestra:
 - Total de pedidos gestionados.
 
 Ordena el resultado de mayor a menor número de pedidos.
+SELECT e.EmployeeID, e.FirstName, e.LastName, COUNT(*) as num_orders
+FROM Employees e
+INNER JOIN Orders o ON e.EmployeeID = o.EmployeeID
+GROUP BY e.EmployeeID, e.FirstName, e.LastName
+Order by num_orders DESC
 
 Este bloque es de ejercicios extra por si quereis practicar:
 ## Extra A: exploración rápida
