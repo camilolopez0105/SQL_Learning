@@ -215,10 +215,44 @@ Northwind quiere una primera foto de negocio para preparar un dashboard.
 ## Entregables
 
 1. Top 10 productos más caros.
+Select TOP 10 * from Products
+ORDER BY Price DESC
 2. Número de clientes por país.
+SELECT c.Country, COUNT(*) as num_clients
+FROM Customers c
+GROUP BY c.Country order by num_clients DESC
 3. Países con más de 3 clientes.
+SELECT c.Country, COUNT(*) as num_clients
+FROM Customers c
+GROUP BY c.Country
+HAVING COUNT(*) > 3
+order by num_clients DESC
 4. Precio medio de productos por categoría.
+SELECT c.CategoryName, AVG(p.Price) as avg_price
+FROM Products p
+INNER JOIN Categories c ON p.CategoryID = c.CategoryID
+GROUP BY c.CategoryName;
 5. Nombre de producto, categoría y proveedor.
+SELECT p.ProductName, c.CategoryName, s.SupplierName
+FROM Products p
+INNER JOIN Categories c ON p.CategoryID = c.CategoryID
+INNER JOIN Suppliers s ON p.SupplierID = s.SupplierID;
 6. Número de pedidos por empleado.
+SELECT e.EmployeeID, e.FirstName, COUNT(o.OrderID) as num_orders
+FROM Employees e
+LEFT JOIN Orders o ON e.EmployeeID = o.EmployeeID
+GROUP BY e.EmployeeID, e.FirstName;
 7. Número de pedidos por transportista.
+SELECT s.ShipperName, COUNT(o.OrderID) as num_orders
+FROM Orders o
+INNER JOIN Shippers s ON o.ShipperID = s.ShipperID
+GROUP BY s.ShipperName;
 8. Categoría con más productos.
+SELECT c.CategoryName, MAX(num_products) as max_products
+FROM (
+  SELECT c.CategoryName, COUNT(p.ProductID) as num_products
+  FROM Products p
+  INNER JOIN Categories c ON p.CategoryID = c.CategoryID
+  GROUP BY c.CategoryName
+) t
+GROUP BY t.CategoryName;
